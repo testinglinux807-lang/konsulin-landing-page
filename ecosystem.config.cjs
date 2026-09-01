@@ -11,7 +11,7 @@ module.exports = {
       autorestart: true,
       env: {
         NODE_ENV: "production",
-        PORT: "3000",
+        PORT: "3001", // 3000 is already taken by the "d3o" app on this VPS
         HOST: "127.0.0.1",
       },
     },
