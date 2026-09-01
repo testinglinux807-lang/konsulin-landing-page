@@ -12,4 +12,10 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Deploying to our own VPS (plain Node.js), not Cloudflare Workers — override
+  // the Lovable default so `npm run build` outputs a standalone Node server
+  // at .output/server/index.mjs instead of a Cloudflare Worker bundle.
+  nitro: {
+    preset: "node_server",
+  },
 });
