@@ -11,7 +11,7 @@ import { submitConsultation } from "@/lib/consultation.functions";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Konsulin - Kelola SaaS Anda dalam Hitam & Putih" },
+      { title: "Konsulin" },
       {
         name: "description",
         content:
@@ -137,6 +137,7 @@ function Landing() {
             <a href="#cara" className="transition-colors hover:text-foreground">Cara kerja</a>
             <a href="#harga" className="transition-colors hover:text-foreground">Harga</a>
             <a href="#jadwal" className="transition-colors hover:text-foreground">Jadwalkan meeting</a>
+            <a href="/blog" className="transition-colors hover:text-foreground">Blog</a>
             <a href="/karir" className="transition-colors hover:text-foreground">Karir</a>
           </nav>
           <a
@@ -159,6 +160,7 @@ function Landing() {
             <a href="#fitur" onClick={() => setNavOpen(false)} className="rounded-sm px-2 py-2.5 transition-colors hover:bg-accent hover:text-foreground">Fitur</a>
             <a href="#cara" onClick={() => setNavOpen(false)} className="rounded-sm px-2 py-2.5 transition-colors hover:bg-accent hover:text-foreground">Cara kerja</a>
             <a href="#harga" onClick={() => setNavOpen(false)} className="rounded-sm px-2 py-2.5 transition-colors hover:bg-accent hover:text-foreground">Harga</a>
+            <a href="/blog" onClick={() => setNavOpen(false)} className="rounded-sm px-2 py-2.5 transition-colors hover:bg-accent hover:text-foreground">Blog</a>
             <a href="/karir" onClick={() => setNavOpen(false)} className="rounded-sm px-2 py-2.5 transition-colors hover:bg-accent hover:text-foreground">Karir</a>
             <a
               href="#jadwal"
