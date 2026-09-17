@@ -188,8 +188,7 @@ function SalesLapanganJob() {
 
           <JobSection title="Skema Penghasilan">
             <p>
-              Posisi ini 100% komisi, tanpa gaji pokok hanya dengan bonus dan recurring. Ada dua jenis
-              komisi:
+              Posisi ini 100% komisi, dengan bonus dan recurring. Ada dua jenis komisi:
             </p>
             <p className="italic">Potensi 4–7jt++, detail melalui Zoom meeting</p>
             <ol className="list-decimal space-y-2 pl-5">
