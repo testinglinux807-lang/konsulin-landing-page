@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
 
 const GOOGLE_FORM_ID = "1FAIpQLSdWZRTMVNQCOVTuEDvKWYiQqzBdj7uX07jsvI5CMVmvhs08gQ";
@@ -57,7 +58,9 @@ function Karir() {
           </div>
         </section>
 
-        <section className="border-b border-border">
+        <SalesLapanganJob />
+
+        <section id="form-lamaran" className="scroll-mt-20 border-b border-border">
           <div className="mx-auto max-w-3xl px-6 py-12">
             <div className="overflow-hidden border border-border bg-card">
               <iframe
@@ -84,5 +87,148 @@ function Karir() {
         <p className="text-xs text-muted-foreground">© 2026 Konsulin. Let's Grow With Us.</p>
       </footer>
     </div>
+  );
+}
+
+function JobSection({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="mt-10">
+      <h3 className="font-display text-sm font-bold uppercase tracking-[0.2em]">{title}</h3>
+      <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">{children}</div>
+    </div>
+  );
+}
+
+function BulletList({ items }: { items: string[] }) {
+  return (
+    <ul className="list-disc space-y-2 pl-5">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
+function SalesLapanganJob() {
+  return (
+    <section className="border-b border-border">
+      <div className="mx-auto max-w-3xl px-6 py-12">
+        <article className="border border-border bg-card p-6 md:p-10">
+          <p className="rounded-sm border border-border bg-muted px-4 py-3 text-center font-display text-xs font-bold uppercase tracking-[0.2em]">
+            Sebelum apply wajib baca detail berikut
+          </p>
+
+          <p className="mt-10 font-display text-xs uppercase tracking-[0.35em] text-muted-foreground">
+            Dicari
+          </p>
+          <h2 className="mt-3 font-display text-2xl font-bold leading-tight tracking-tight md:text-3xl">
+            Sales Lapangan (Mitra) – Aplikasi Asisten Warung
+          </h2>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Freelance / Kemitraan · Full-time atau Part-time · Bandung
+          </p>
+
+          <JobSection title="Tentang Konsulin">
+            <p>
+              Konsulin bikin software buat bantu bisnis kecil jalan lebih rapi. Produk yang lagi kami
+              pasarkan: Asisten Warung, aplikasi di HP buat pemilik warung kelontong untuk nyatet
+              jualan, stok, dan untung harian tanpa buku tulis.
+            </p>
+          </JobSection>
+
+          <JobSection title="Yang Bakal Kamu Kerjakan">
+            <BulletList
+              items={[
+                "Mendatangi warung kelontong di area yang sudah ditentukan (daftar warung kami sediakan)",
+                "Demo aplikasi langsung di HP ke pemilik warung, sekitar 5–10 menit",
+                "Membantu pemilik warung daftar dan mulai masa coba 7 hari",
+                "Follow up warung yang sedang mencoba sampai mereka berlangganan",
+                "Mengisi laporan kunjungan harian (foto warung + hasil kunjungan) lewat form",
+                "Menyampaikan masukan dari lapangan: keluhan, alasan menolak, fitur yang diminta",
+              ]}
+            />
+          </JobSection>
+
+          <JobSection title="Produk yang Kamu Jual">
+            <p>
+              Masalah yang sering dialami warung: jualan dicatat di buku, sering salah hitung saat
+              ramai, stok cuma dihafal, lupa siapa yang masih utang, dan rekap akhir bulan jarang cocok
+              dengan uang di laci.
+            </p>
+            <p>Asisten Warung membantu pemilik warung untuk:</p>
+            <BulletList
+              items={[
+                "Mencatat penjualan dengan cepat, bisa scan barang pakai kamera HP",
+                "Memantau stok dan tahu barang mana yang perlu dibelanja duluan",
+                "Melihat laporan untung rugi secara otomatis",
+                "Mengetahui barang yang laris dan yang tidak laku",
+                "Mencatat utang pelanggan",
+                'Bertanya ke asisten AI, misalnya "siapa yang belum bayar utang?"',
+                "Memantau warung dari mana saja, data tidak hilang seperti buku tulis",
+              ]}
+            />
+            <p className="font-medium text-foreground">
+              Harga: Rp78.000/bulan · Rp210.000/3 bulan · Rp684.000/tahun
+            </p>
+            <p>
+              Pembayaran online lewat{" "}
+              <a
+                href="https://asistenwarung.konsulin.com"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                asistenwarung.konsulin.com
+              </a>
+              .
+              <br />
+              Materi produk dan latihan demo kami berikan di awal.
+            </p>
+          </JobSection>
+
+          <JobSection title="Skema Penghasilan">
+            <p>
+              Posisi ini 100% komisi, tanpa gaji pokok hanya dengan bonus dan recurring. Ada dua jenis
+              komisi:
+            </p>
+            <p className="italic">Potensi 4–7jt++, detail melalui Zoom meeting</p>
+            <ol className="list-decimal space-y-2 pl-5">
+              <li>Komisi closing, dibayar setiap warung melakukan pembayaran pertama 30%</li>
+              <li>
+                Komisi berulang
+                <br />
+                Selama warung yang kamu closing masih memperpanjang langganan, kamu mendapat 15/25% dari
+                setiap perpanjangan.
+              </li>
+            </ol>
+            <p>
+              Komisi dibayar setiap tanggal 5 setelah pembayaran warung terverifikasi. Closing selama
+              masa trial tetap dibayar komisinya.
+            </p>
+          </JobSection>
+
+          <JobSection title="Alur Rekrutmen">
+            <ol className="list-decimal space-y-2 pl-5">
+              <li>
+                Lamar dengan mengisi{" "}
+                <a href="#form-lamaran" className="underline underline-offset-4 hover:text-foreground">
+                  form lamaran di bawah
+                </a>
+              </li>
+              <li>
+                Tonton video brief, lalu ngobrol singkat 10 menit via Google Meet{" "}
+                <span className="italic">(penting, wajib hadir)</span>
+              </li>
+              <li>Tes lapangan 24 jam: kunjungi minimal 2 warung, lalu kirim foto dan laporan</li>
+              <li>
+                Masa trial: full-time 7 hari, part-time maksimal 14 hari atau 30 kunjungan, dengan
+                target 3 warung closing
+              </li>
+              <li>Lolos trial, tanda tangan perjanjian kemitraan</li>
+            </ol>
+          </JobSection>
+        </article>
+      </div>
+    </section>
   );
 }
