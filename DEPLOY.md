@@ -49,7 +49,10 @@ Isi:
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxx
 CONSULTATION_NOTIFY_EMAIL=konsulinsupport@gmail.com
 RESEND_FROM_EMAIL=Konsulin <onboarding@resend.dev>
+MAKALIN_API_URL=http://127.0.0.1:4100
 ```
+
+`MAKALIN_API_URL` = API Makalin Ops buat form lamaran Sales Partner di `/karir` (boleh dikosongin, default-nya udah itu).
 
 ## 4. Jalankan dengan PM2
 
@@ -80,6 +83,9 @@ Isi:
 server {
     listen 80;
     server_name namadomain.com www.namadomain.com;
+
+    # Form lamaran di /karir ngirim CV + foto (maks 3 MB masing-masing, base64) - default nginx cuma 1 MB.
+    client_max_body_size 10m;
 
     location / {
         proxy_pass http://127.0.0.1:3001;

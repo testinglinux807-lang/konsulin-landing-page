@@ -1,10 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import logoUrl from "@/assets/logo.png";
-
-const GOOGLE_FORM_ID = "1FAIpQLSdWZRTMVNQCOVTuEDvKWYiQqzBdj7uX07jsvI5CMVmvhs08gQ";
-const FORM_VIEW_URL = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/viewform`;
-const FORM_EMBED_URL = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/viewform?embedded=true`;
+import { FormLamaran } from "@/components/form-lamaran";
 
 export const Route = createFileRoute("/karir")({
   head: () => ({
@@ -12,7 +9,8 @@ export const Route = createFileRoute("/karir")({
       { title: "Karir — Konsulin" },
       {
         name: "description",
-        content: "Konsulin sedang membuka lowongan. Lihat posisi yang tersedia dan kirim lamaran Anda.",
+        content:
+          "Konsulin sedang membuka lowongan. Lihat posisi yang tersedia dan kirim lamaran Anda.",
       },
     ],
   }),
@@ -28,7 +26,10 @@ function Karir() {
             <img src={logoUrl} alt="Logo Konsulin" className="h-8 w-8" width={40} height={40} />
             <span className="font-display text-lg font-bold tracking-tight">Konsulin</span>
           </a>
-          <a href="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+          <a
+            href="/"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
             ← Kembali ke beranda
           </a>
         </div>
@@ -48,12 +49,10 @@ function Karir() {
               yang dipakai bisnis sungguhan setiap hari, isi form di bawah ini.
             </p>
             <a
-              href={FORM_VIEW_URL}
-              target="_blank"
-              rel="noreferrer"
+              href="#form-lamaran"
               className="mt-8 inline-block rounded-sm bg-primary px-7 py-3.5 font-display text-sm font-medium text-primary-foreground transition-opacity hover:opacity-85"
             >
-              Buka Form Lamaran di Tab Baru
+              Isi Form Lamaran
             </a>
           </div>
         </section>
@@ -62,23 +61,7 @@ function Karir() {
 
         <section id="form-lamaran" className="scroll-mt-20 border-b border-border">
           <div className="mx-auto max-w-3xl px-6 py-12">
-            <div className="overflow-hidden border border-border bg-card">
-              <iframe
-                src={FORM_EMBED_URL}
-                title="Form Lamaran Karir Konsulin"
-                className="h-[80vh] min-h-[500px] w-full sm:h-[900px]"
-                loading="lazy"
-              >
-                Memuat form...
-              </iframe>
-            </div>
-            <p className="mt-4 text-center text-xs text-muted-foreground">
-              Form tidak muncul?{" "}
-              <a href={FORM_VIEW_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-foreground">
-                Buka langsung di Google Forms
-              </a>
-              .
-            </p>
+            <FormLamaran />
           </div>
         </section>
       </main>
@@ -130,9 +113,9 @@ function SalesLapanganJob() {
 
           <JobSection title="Tentang Konsulin">
             <p>
-              Konsulin bikin software buat bantu bisnis kecil jalan lebih rapi. Produk yang lagi kami
-              pasarkan: Asisten Warung, aplikasi di HP buat pemilik warung kelontong untuk nyatet
-              jualan, stok, dan untung harian tanpa buku tulis.
+              Konsulin bikin software buat bantu bisnis kecil jalan lebih rapi. Produk yang lagi
+              kami pasarkan: Asisten Warung, aplikasi di HP buat pemilik warung kelontong untuk
+              nyatet jualan, stok, dan untung harian tanpa buku tulis.
             </p>
           </JobSection>
 
@@ -152,8 +135,8 @@ function SalesLapanganJob() {
           <JobSection title="Produk yang Kamu Jual">
             <p>
               Masalah yang sering dialami warung: jualan dicatat di buku, sering salah hitung saat
-              ramai, stok cuma dihafal, lupa siapa yang masih utang, dan rekap akhir bulan jarang cocok
-              dengan uang di laci.
+              ramai, stok cuma dihafal, lupa siapa yang masih utang, dan rekap akhir bulan jarang
+              cocok dengan uang di laci.
             </p>
             <p>Asisten Warung membantu pemilik warung untuk:</p>
             <BulletList
@@ -187,22 +170,20 @@ function SalesLapanganJob() {
           </JobSection>
 
           <JobSection title="Skema Penghasilan">
-            <p>
-              Posisi ini 100% komisi, dengan bonus dan recurring. Ada dua jenis komisi:
-            </p>
+            <p>Posisi ini 100% komisi, dengan bonus dan recurring. Ada dua jenis komisi:</p>
             <p className="italic">Potensi 4–7jt++, detail melalui Zoom meeting</p>
             <ol className="list-decimal space-y-2 pl-5">
               <li>Komisi closing, dibayar setiap warung melakukan pembayaran pertama 30%</li>
               <li>
                 Komisi berulang
                 <br />
-                Selama warung yang kamu closing masih memperpanjang langganan, kamu mendapat 15/25% dari
-                setiap perpanjangan.
+                Selama warung yang kamu closing masih memperpanjang langganan, kamu mendapat 15/25%
+                dari setiap perpanjangan.
               </li>
             </ol>
             <p>
-              Komisi dibayar setiap tanggal 5 setelah pembayaran warung terverifikasi. Closing selama
-              masa trial tetap dibayar komisinya.
+              Komisi dibayar setiap tanggal 5 setelah pembayaran warung terverifikasi. Closing
+              selama masa trial tetap dibayar komisinya.
             </p>
           </JobSection>
 
@@ -210,7 +191,10 @@ function SalesLapanganJob() {
             <ol className="list-decimal space-y-2 pl-5">
               <li>
                 Lamar dengan mengisi{" "}
-                <a href="#form-lamaran" className="underline underline-offset-4 hover:text-foreground">
+                <a
+                  href="#form-lamaran"
+                  className="underline underline-offset-4 hover:text-foreground"
+                >
                   form lamaran di bawah
                 </a>
               </li>
