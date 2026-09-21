@@ -81,13 +81,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
+          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Warung dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
       },
       { property: "og:title", content: "Konsulin" },
       {
         property: "og:description",
         content:
-          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
+          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Warung dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Konsulin" },
@@ -116,7 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="id">
       <head>
         <HeadContent />
       </head>

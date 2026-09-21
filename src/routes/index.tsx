@@ -5,6 +5,7 @@ import logoUrl from "@/assets/logo.png";
 import rinaPhoto from "@/assets/rinawijaya.jpg";
 import budiPhoto from "@/assets/budiwijaya.jpg";
 import salimPhoto from "@/assets/salimkusuma.jpg";
+import warungShot from "@/assets/asisten-warung-beranda.jpg";
 import { Showcase } from "@/components/showcase";
 import { submitConsultation } from "@/lib/consultation.functions";
 
@@ -15,12 +16,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
+          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Warung dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
       },
       { property: "og:title", content: "Konsulin" },
       {
         property: "og:description",
-        content: "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
+        content: "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Warung dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -29,35 +30,30 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const features = [
-  {
-    title: "Analitik real-time",
-    body: "Metrik produk, retensi, dan revenue dalam satu papan yang bisa dibaca sekali lihat.",
-  },
-  {
-    title: "Otomasi alur kerja",
-    body: "Rangkai pemicu dan aksi tanpa kode. Konsulin menjalankannya diam-diam di latar belakang.",
-  },
-  {
-    title: "Kolaborasi tim",
-    body: "Catatan, keputusan, dan konteks menempel pada datanya - bukan tersebar di chat.",
-  },
+// Fitur Asisten Warung yang beneran ada di aplikasinya (asistenwarung.konsulin.com), bukan daftar fitur SaaS umum.
+const fiturWarung = [
+  { t: "Catat jualan dari kamera HP", d: "Scan barcode barang, total langsung keluar. Bayar tunai atau QRIS." },
+  { t: "Untung hari ini, bukan cuma omzet", d: "Modal tiap barang ikut dihitung, jadi yang kelihatan untung bersihnya." },
+  { t: "Stok yang mau habis ketahuan duluan", d: "Daftar belanja disusun dari seberapa cepat barangnya laku." },
+  { t: "Kasbon pelanggan nggak lupa", d: "Siapa yang belum bayar, berapa, dan sejak kapan." },
+  { t: "Tanya Mang AI", d: 'Cukup ketik "siapa yang belum bayar utang?" atau "barang apa yang paling laris?".' },
 ];
 
 const steps = [
-  { n: "01", t: "Konsultasi kebutuhan", d: "Ceritakan alur bisnis Anda - kami rekomendasikan ERP Cafe atau Asisten Toko yang paling pas." },
+  { n: "01", t: "Konsultasi kebutuhan", d: "Ceritakan alur bisnis Anda - kami rekomendasikan ERP Cafe atau Asisten Warung yang paling pas." },
   { n: "02", t: "Setup & kustomisasi", d: "Kami pasang dan sesuaikan fitur, harga, hingga tampilan sesuai kebutuhan Anda." },
   { n: "03", t: "Pelatihan & go-live", d: "Tim Anda dilatih, sistem langsung aktif, dan tim support kami siap membantu." },
 ];
 
+// Harga Asisten Warung disamain sama yang ditagih lewat Midtrans (warung-pintar-backend/src/services/midtrans.service.js).
+const hargaWarung = [
+  { durasi: "1 bulan", harga: "Rp78.000", ket: "" },
+  { durasi: "3 bulan", harga: "Rp210.000", ket: "Rp70.000/bulan" },
+  { durasi: "1 tahun", harga: "Rp684.000", ket: "Rp57.000/bulan" },
+  { durasi: "Permanen", harga: "Rp3.650.000", ket: "sekali bayar" },
+];
+
 const plans = [
-  {
-    name: "Asisten Toko",
-    price: "Rp50rb",
-    note: "mulai dari /bulan",
-    items: ["Kasir & pencatatan stok", "Laporan penjualan harian", "Multi user"],
-    dark: false,
-  },
   {
     name: "ERP Cafe",
     price: "Rp200rb",
@@ -67,8 +63,8 @@ const plans = [
   },
   {
     name: "Custom",
-    price: "Custom",
-    note: "fitur & harga menyesuaikan",
+    price: "Sesuai kebutuhan",
+    note: "fitur & harga dihitung bareng tim kami",
     items: ["Fitur sesuai kebutuhan", "Harga custom", "Paket permanen (bayar sekali) - akses hingga 4 pengguna"],
     dark: false,
   },
@@ -184,7 +180,7 @@ function Landing() {
               Sistem yang Tumbuh Bersama Bisnis Anda
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
-              Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin
+              Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Warung dari Konsulin
               bikin operasional bisnis Anda lebih rapi dan siap berkembang.
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
@@ -206,14 +202,56 @@ function Landing() {
         </section>
 
 
-        <section id="fitur" className="border-b border-border">
-          <div className="mx-auto grid max-w-6xl gap-px bg-border px-0 md:grid-cols-3">
-            {features.map((f) => (
-              <div key={f.title} className="bg-background p-10">
-                <h2 className="font-display text-xl font-bold tracking-tight">{f.title}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+        <section id="fitur" className="scroll-mt-16 border-b border-border">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:gap-16">
+            <div>
+              <h2 className="font-display text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl">
+                Asisten Warung: buku warung pindah ke HP
+              </h2>
+              <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+                Buat warung kelontong yang selama ini nyatet di buku tulis. Buka aplikasinya, dan
+                untung hari ini langsung kelihatan di layar pertama.
+              </p>
+              <dl className="mt-10 divide-y divide-border border-y border-border">
+                {fiturWarung.map((f) => (
+                  <div key={f.t} className="grid gap-1 py-4 sm:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] sm:gap-6">
+                    <dt className="font-display text-sm font-bold tracking-tight">{f.t}</dt>
+                    <dd className="text-sm leading-relaxed text-muted-foreground">{f.d}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <a
+                  href="https://asistenwarung.konsulin.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-sm bg-primary px-7 py-3.5 font-display text-sm font-medium text-primary-foreground transition-opacity hover:opacity-85"
+                >
+                  Coba gratis 7 hari
+                </a>
+                <a
+                  href="#harga"
+                  className="rounded-sm border border-primary px-7 py-3.5 font-display text-sm font-medium transition-colors hover:bg-accent"
+                >
+                  Lihat harga Asisten Warung
+                </a>
               </div>
-            ))}
+            </div>
+            <figure className="mx-auto w-full max-w-[300px] md:max-w-[340px]">
+              <div className="overflow-hidden rounded-[2.2rem] border-[10px] border-primary bg-primary shadow-[0_30px_60px_-30px_rgba(0,0,0,0.45)]">
+                <img
+                  src={warungShot}
+                  alt="Layar beranda Asisten Warung: untung hari ini, jumlah penjualan, total kasbon, dan stok yang mau habis"
+                  width={780}
+                  height={1688}
+                  loading="lazy"
+                  className="block h-auto w-full"
+                />
+              </div>
+              <figcaption className="mt-3 text-center text-xs text-muted-foreground">
+                Beranda Asisten Warung, diambil dari akun demo
+              </figcaption>
+            </figure>
           </div>
         </section>
 
@@ -234,12 +272,40 @@ function Landing() {
           </div>
         </section>
 
-        <section id="harga" className="border-b border-border">
+        <section id="harga" className="scroll-mt-16 border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-24">
-            <h2 className="text-center font-display text-4xl font-bold tracking-tight">
-              Harga paket kami
-            </h2>
-            <div className="mt-14 grid gap-6 md:grid-cols-3">
+            <h2 className="font-display text-4xl font-bold tracking-tight">Harga</h2>
+
+            <div className="mt-12 grid gap-px border border-border bg-border md:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+              <div className="bg-card p-8 md:p-10">
+                <h3 className="font-display text-2xl font-bold tracking-tight">Asisten Warung</h3>
+                <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
+                  Semua fitur di atas, di semua paket. Bedanya cuma lama langganan. Mulai dengan coba
+                  gratis 7 hari, bayar online lewat aplikasinya.
+                </p>
+                <a
+                  href="https://asistenwarung.konsulin.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-8 inline-block rounded-sm bg-primary px-6 py-3 font-display text-sm font-medium text-primary-foreground transition-opacity hover:opacity-85"
+                >
+                  Coba gratis 7 hari
+                </a>
+              </div>
+              <ul className="divide-y divide-border bg-card">
+                {hargaWarung.map((h) => (
+                  <li key={h.durasi} className="flex items-baseline justify-between gap-4 px-8 py-5 md:px-10">
+                    <span className="font-display text-sm font-medium">{h.durasi}</span>
+                    <span className="text-right">
+                      <span className="font-display text-2xl font-bold tracking-tight">{h.harga}</span>
+                      {h.ket && <span className="block text-xs text-muted-foreground">{h.ket}</span>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6 grid gap-6 md:grid-cols-2">
               {plans.map((p) => (
                 <div
                   key={p.name}
@@ -249,16 +315,14 @@ function Landing() {
                       : "border border-border bg-card p-8 text-card-foreground"
                   }
                 >
-                  <h3 className="font-display text-sm uppercase tracking-[0.25em] opacity-60">
-                    {p.name}
-                  </h3>
+                  <h3 className="font-display text-2xl font-bold tracking-tight">{p.name}</h3>
                   <p className="mt-5 font-display text-4xl font-bold tracking-tight">{p.price}</p>
-                  <p className="mt-1 text-xs opacity-60">{p.note}</p>
+                  <p className="mt-1 text-xs opacity-70">{p.note}</p>
                   <ul className="mt-7 space-y-2.5 text-sm">
                     {p.items.map((i) => (
                       <li key={i} className="flex gap-2">
-                        <span className="opacity-40">-</span>
-                        <span className="opacity-85">{i}</span>
+                        <span className="opacity-50">-</span>
+                        <span className="opacity-90">{i}</span>
                       </li>
                     ))}
                   </ul>
@@ -271,7 +335,7 @@ function Landing() {
                         : "mt-8 block rounded-sm border border-primary px-4 py-3 text-center font-display text-sm font-medium transition-colors hover:bg-accent"
                     }
                   >
-                    {p.price === "Custom" ? "Hubungi Kami" : `Pilih ${p.name}`}
+                    {p.name === "Custom" ? "Diskusikan kebutuhan Anda" : `Jadwalkan demo ${p.name}`}
                   </a>
                 </div>
               ))}
@@ -525,7 +589,7 @@ function Landing() {
           <div className="mt-12 flex flex-col items-center gap-2 border-t border-border pt-6 text-center text-xs text-muted-foreground sm:flex-row sm:justify-between">
             <p>© 2026 Konsulin. Let's Grow With Us.</p>
             <a href="/karir" className="transition-colors hover:text-foreground">
-              Kami sedang open hiring — lihat karir di Konsulin
+              Kami sedang open hiring, lihat karir di Konsulin
             </a>
           </div>
         </div>

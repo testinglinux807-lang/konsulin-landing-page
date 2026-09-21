@@ -6,13 +6,13 @@ import { FormLamaran } from "@/components/form-lamaran";
 export const Route = createFileRoute("/karir")({
   head: () => ({
     meta: [
-      { title: "Karir — Konsulin" },
+      { title: "Karir | Konsulin" },
       {
         name: "description",
         content:
           "Konsulin sedang membuka lowongan. Lihat posisi yang tersedia dan kirim lamaran Anda.",
       },
-      { property: "og:title", content: "Karir — Konsulin" },
+      { property: "og:title", content: "Karir | Konsulin" },
       {
         property: "og:description",
         content: "Konsulin lagi buka lowongan Sales Partner. Baca detail posisinya dan kirim lamaranmu.",
@@ -50,7 +50,7 @@ function Karir() {
               Karir di Konsulin
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
-              Konsulin sedang open hiring. Kalau kamu tertarik membangun ERP Cafe dan Asisten Toko
+              Konsulin sedang open hiring. Kalau kamu tertarik membangun ERP Cafe dan Asisten Warung
               yang dipakai bisnis sungguhan setiap hari, isi form di bawah ini.
             </p>
             <a
