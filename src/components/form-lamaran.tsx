@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { ambilInfoLamaran, kirimLamaran } from "@/lib/lamaran.functions";
+import { keWebp } from "@/lib/gambar";
 
 // Form lamaran Sales Partner (3 langkah). Kiriman diterusin server landing ke Makalin Ops, tempat tim rekrutmen
 // ngeproses kandidat. ?s=KODE = titik sebar (poster, postingan grup, dst), ?ref=REF-XXXXXX = diajak teman.
@@ -157,18 +158,31 @@ export function FormLamaran() {
 
   const pilihFile =
     (setB: (b: Berkas) => void, jenis: "cv" | "foto") =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
       const f = e.target.files?.[0];
       e.target.value = "";
       setError("");
       if (!f) return;
-      if (f.size > MAKS_FILE) return setError(`${jenis === "cv" ? "CV" : "Foto"} maksimal 3 MB`);
-      const boleh =
-        jenis === "cv"
-          ? ["application/pdf", "image/jpeg", "image/png"]
-          : ["image/jpeg", "image/png"];
-      if (!boleh.includes(f.type))
-        return setError(jenis === "cv" ? "CV harus PDF, JPG, atau PNG" : "Foto harus JPG atau PNG");
+      const gambar = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"].includes(
+        f.type,
+      );
+      if (jenis === "foto" && !gambar) return setError("Foto harus berupa gambar (JPG, PNG, WEBP)");
+      if (jenis === "cv" && !gambar && f.type !== "application/pdf")
+        return setError("CV harus PDF atau gambar (JPG, PNG, WEBP)");
+      // Gambar diubah ke WEBP + dikecilin dulu (lib/gambar); PDF dikirim apa adanya.
+      if (gambar) {
+        try {
+          const h = await keWebp(f, jenis === "foto" ? 1200 : 2000);
+          if (h.ukuran > MAKS_FILE)
+            return setError(
+              `${jenis === "cv" ? "CV" : "Foto"} masih lebih dari 3 MB setelah dikecilin`,
+            );
+          return setB(h);
+        } catch {
+          return setError("Gambar nggak kebaca. Coba pilih ulang atau pakai JPG.");
+        }
+      }
+      if (f.size > MAKS_FILE) return setError("CV PDF maksimal 3 MB");
       const r = new FileReader();
       r.onload = () => setB({ nama: f.name, ukuran: f.size, data: String(r.result) });
       r.readAsDataURL(f);
@@ -304,14 +318,12 @@ export function FormLamaran() {
           <input
             type="file"
             className="sr-only"
-            accept={
-              jenis === "cv" ? "application/pdf,image/jpeg,image/png" : "image/jpeg,image/png"
-            }
+            accept={jenis === "cv" ? "application/pdf,image/*" : "image/*"}
             onChange={pilihFile(setB, jenis)}
           />
           <span className="font-display font-medium">Pilih file</span>
           <span className="text-xs text-muted-foreground">
-            {jenis === "cv" ? "PDF, JPG, atau PNG, maksimal 3 MB" : "JPG atau PNG, maksimal 3 MB"}
+            {jenis === "cv" ? "PDF (maks 3 MB) atau foto dokumen" : "Foto dari kamera atau galeri"}
           </span>
         </label>
       )}
