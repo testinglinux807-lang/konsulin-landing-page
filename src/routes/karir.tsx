@@ -12,6 +12,11 @@ export const Route = createFileRoute("/karir")({
         content:
           "Konsulin sedang membuka lowongan. Lihat posisi yang tersedia dan kirim lamaran Anda.",
       },
+      { property: "og:title", content: "Karir — Konsulin" },
+      {
+        property: "og:description",
+        content: "Konsulin lagi buka lowongan Sales Partner. Baca detail posisinya dan kirim lamaranmu.",
+      },
     ],
   }),
   component: Karir,

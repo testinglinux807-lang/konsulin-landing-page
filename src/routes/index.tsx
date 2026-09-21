@@ -15,12 +15,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Konsulin menyatukan analitik, otomasi, dan kolaborasi tim dalam satu workspace monokrom yang tenang dan cepat.",
+          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
       },
-      { property: "og:title", content: "Konsulin - Workspace SaaS Monokrom" },
+      { property: "og:title", content: "Konsulin" },
       {
         property: "og:description",
-        content: "Analitik, otomasi, dan kolaborasi dalam satu workspace yang tenang.",
+        content: "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

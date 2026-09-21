@@ -77,18 +77,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Konsulin — Monochrome SaaS Workspace" },
+      { title: "Konsulin" },
       {
         name: "description",
         content:
-          "Konsulin is a black-and-white SaaS workspace for teams that ship: analytics, automation, and collaboration in one calm interface.",
+          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
       },
-      { property: "og:title", content: "Konsulin — Monochrome SaaS Workspace" },
+      { property: "og:title", content: "Konsulin" },
       {
         property: "og:description",
-        content: "Analytics, automation, and collaboration in one calm monochrome workspace.",
+        content:
+          "Dari kasir harian sampai laporan keuangan - ERP Cafe dan Asisten Toko dari Konsulin bikin operasional bisnis Anda lebih rapi dan siap berkembang.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Konsulin" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
