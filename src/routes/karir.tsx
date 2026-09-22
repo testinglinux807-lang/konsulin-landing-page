@@ -113,7 +113,7 @@ function SalesLapanganJob() {
             Sales Lapangan (Mitra) – Aplikasi Asisten Warung
           </h2>
           <p className="mt-3 text-sm text-muted-foreground">
-            Freelance / Kemitraan · Full-time atau Part-time · Bandung
+            Freelance / Kemitraan · Full-time atau Part-time · Domisili Asal
           </p>
 
           <JobSection title="Tentang Konsulin">
