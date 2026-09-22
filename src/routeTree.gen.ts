@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as KarirRouteImport } from './routes/karir'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as JadwalTokenRouteImport } from './routes/jadwal/$token'
+import { Route as KuisTokenRouteImport } from './routes/kuis/$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,17 +36,31 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JadwalTokenRoute = JadwalTokenRouteImport.update({
+  id: '/jadwal/$token',
+  path: '/jadwal/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuisTokenRoute = KuisTokenRouteImport.update({
+  id: '/kuis/$token',
+  path: '/kuis/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/karir': typeof KarirRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/jadwal/$token': typeof JadwalTokenRoute
+  '/kuis/$token': typeof KuisTokenRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/karir': typeof KarirRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/jadwal/$token': typeof JadwalTokenRoute
+  '/kuis/$token': typeof KuisTokenRoute
   '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
@@ -52,20 +68,38 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/karir': typeof KarirRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/jadwal/$token': typeof JadwalTokenRoute
+  '/kuis/$token': typeof KuisTokenRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/karir' | '/blog/$slug' | '/blog/'
+  fullPaths:
+    | '/'
+    | '/karir'
+    | '/blog/$slug'
+    | '/jadwal/$token'
+    | '/kuis/$token'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/karir' | '/blog/$slug' | '/blog'
-  id: '__root__' | '/' | '/karir' | '/blog/$slug' | '/blog/'
+  to:
+    '/' | '/karir' | '/blog/$slug' | '/jadwal/$token' | '/kuis/$token' | '/blog'
+  id:
+    | '__root__'
+    | '/'
+    | '/karir'
+    | '/blog/$slug'
+    | '/jadwal/$token'
+    | '/kuis/$token'
+    | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   KarirRoute: typeof KarirRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  JadwalTokenRoute: typeof JadwalTokenRoute
+  KuisTokenRoute: typeof KuisTokenRoute
   BlogIndexRoute: typeof BlogIndexRoute
 }
 
@@ -99,6 +133,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jadwal/$token': {
+      id: '/jadwal/$token'
+      path: '/jadwal/$token'
+      fullPath: '/jadwal/$token'
+      preLoaderRoute: typeof JadwalTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kuis/$token': {
+      id: '/kuis/$token'
+      path: '/kuis/$token'
+      fullPath: '/kuis/$token'
+      preLoaderRoute: typeof KuisTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -106,6 +154,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   KarirRoute: KarirRoute,
   BlogSlugRoute: BlogSlugRoute,
+  JadwalTokenRoute: JadwalTokenRoute,
+  KuisTokenRoute: KuisTokenRoute,
   BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport

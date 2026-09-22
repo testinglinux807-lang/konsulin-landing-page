@@ -65,3 +65,23 @@ export function ambilInfo(s: string) {
 export function kirim(data: Record<string, unknown>, ipPelamar?: string | undefined) {
   return panggil("/daftar", { method: "POST", body: JSON.stringify(data), ipPelamar });
 }
+
+// ---- Kuis product & pilih jadwal interview (link unik per kandidat, dikirim tim rekrutmen via WA) ----
+export type SoalKuis = { id: number; pertanyaan: string; pilihan: string[] };
+export type InfoKuis = { nama: string; selesai: boolean; soal?: SoalKuis[]; benar?: number; dari?: number; lulus?: boolean };
+export type Slot = { id: number; mulai: string; durasi: number; lokasi: string | null; pewawancara: string };
+export type InfoJadwal = { nama: string; tutup: boolean; terpilih: Slot | null; slot: Slot[] };
+
+const jalur = (t: string) => encodeURIComponent(t);
+export function ambilKuis(token: string) {
+  return panggil(`/kuis/${jalur(token)}`, { method: "GET" }) as Promise<InfoKuis>;
+}
+export function kirimKuis(token: string, data: { jawaban: Record<string, number>; setuju: boolean }, ip?: string) {
+  return panggil(`/kuis/${jalur(token)}`, { method: "POST", body: JSON.stringify(data), ipPelamar: ip }) as Promise<{ benar: number; dari: number; lulus: boolean }>;
+}
+export function ambilJadwal(token: string) {
+  return panggil(`/jadwal/${jalur(token)}`, { method: "GET" }) as Promise<InfoJadwal>;
+}
+export function pilihJadwal(token: string, slot: number, ip?: string) {
+  return panggil(`/jadwal/${jalur(token)}`, { method: "POST", body: JSON.stringify({ slot }), ipPelamar: ip }) as Promise<Slot>;
+}

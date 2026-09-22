@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader, getRequestIP } from "@tanstack/react-start/server";
 import { z } from "zod";
-import { ambilInfo, kirim } from "./lamaran.server";
+import { ambilInfo, ambilJadwal, ambilKuis, kirim, kirimKuis, pilihJadwal } from "./lamaran.server";
 
 // RPC buat form lamaran Sales Partner di /karir. Validasi isi lengkapnya di Makalin (satu sumber aturan);
 // di sini cuma bentuk dasarnya + batas ukuran biar request aneh nggak diterusin.
@@ -38,3 +38,18 @@ export const kirimLamaran = createServerFn({ method: "POST" })
     await kirim(data, getRequestHeader("x-real-ip") || getRequestIP());
     return { ok: true as const };
   });
+
+// Kuis product & pilih jadwal interview kandidat Sales Partner (/kuis/$token, /jadwal/$token).
+const token = z.string().regex(/^[\w-]{10,40}$/);
+export const ambilKuisFn = createServerFn({ method: "GET" })
+  .validator(z.object({ token }))
+  .handler(async ({ data }) => ambilKuis(data.token));
+export const kirimKuisFn = createServerFn({ method: "POST" })
+  .validator(z.object({ token, jawaban: z.record(z.string().max(12), z.number().int().min(0).max(9)), setuju: z.boolean() }))
+  .handler(async ({ data }) => kirimKuis(data.token, { jawaban: data.jawaban, setuju: data.setuju }, getRequestHeader("x-real-ip") || getRequestIP()));
+export const ambilJadwalFn = createServerFn({ method: "GET" })
+  .validator(z.object({ token }))
+  .handler(async ({ data }) => ambilJadwal(data.token));
+export const pilihJadwalFn = createServerFn({ method: "POST" })
+  .validator(z.object({ token, slot: z.coerce.number().int().positive() }))
+  .handler(async ({ data }) => pilihJadwal(data.token, data.slot, getRequestHeader("x-real-ip") || getRequestIP()));
