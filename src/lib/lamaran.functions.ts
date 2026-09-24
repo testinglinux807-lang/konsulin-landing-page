@@ -45,8 +45,8 @@ export const ambilKuisFn = createServerFn({ method: "GET" })
   .validator(z.object({ token }))
   .handler(async ({ data }) => ambilKuis(data.token));
 export const kirimKuisFn = createServerFn({ method: "POST" })
-  .validator(z.object({ token, jawaban: z.record(z.string().max(12), z.number().int().min(0).max(9)), setuju: z.boolean() }))
-  .handler(async ({ data }) => kirimKuis(data.token, { jawaban: data.jawaban, setuju: data.setuju }, getRequestHeader("x-real-ip") || getRequestIP()));
+  .validator(z.object({ token, jawaban: z.record(z.string().max(12), z.number().int().min(0).max(9)), esai: z.record(z.string().max(12), z.string().max(3000)).default({}), setuju: z.boolean() }))
+  .handler(async ({ data }) => kirimKuis(data.token, { jawaban: data.jawaban, esai: data.esai, setuju: data.setuju }, getRequestHeader("x-real-ip") || getRequestIP()));
 export const ambilJadwalFn = createServerFn({ method: "GET" })
   .validator(z.object({ token }))
   .handler(async ({ data }) => ambilJadwal(data.token));
