@@ -40,6 +40,9 @@ type Isi = {
   setujuData: boolean;
   setujuWa: boolean;
 };
+// Isian + file (CV/foto) - dipakai buat nandain & ngarahin ke isian yang belum bener.
+type Kunci = keyof Isi | "cv" | "foto";
+
 const AWAL: Isi = {
   nama: "",
   noHp: "",
@@ -82,6 +85,8 @@ export function FormLamaran() {
   const [cv, setCv] = useState<Berkas>(null);
   const [foto, setFoto] = useState<Berkas>(null);
   const [langkah, setLangkah] = useState(0);
+  // Isian yang belum bener: ditandain merah, pesan di bawahnya, dan layar di-scroll + fokus ke situ.
+  const [salahDi, setSalahDi] = useState<{ k: Kunci; n: number } | null>(null);
   const [error, setError] = useState("");
   const [sibuk, setSibuk] = useState(false);
   const [selesai, setSelesai] = useState(false);
@@ -104,56 +109,96 @@ export function FormLamaran() {
   const perluDropdown = !kodeDikenal && !isi.referral.trim();
   const set = <K extends keyof Isi>(k: K, v: Isi[K]) => {
     setError("");
+    setSalahDi(null);
     setIsi((x) => ({ ...x, [k]: v }));
   };
 
-  const cekLangkah = (i: number) => {
-    const kosong = (k: keyof Isi, label: string) =>
-      !String(isi[k] ?? "").trim() ? `${label} wajib diisi` : null;
-    const cek: Record<number, (string | null)[]> = {
+  type Cek = [Kunci, string | null];
+  const cekLangkah = (i: number): { k: Kunci; pesan: string } | null => {
+    const kosong = (k: keyof Isi, label: string): Cek => [
+      k,
+      !String(isi[k] ?? "").trim() ? `${label} wajib diisi` : null,
+    ];
+    const cek: Record<number, Cek[]> = {
       0: [
         kosong("nama", "Nama lengkap"),
-        isi.noHp.replace(/\D/g, "").length < 10 ? "Nomor WhatsApp belum benar" : null,
+        ["noHp", isi.noHp.replace(/\D/g, "").length < 10 ? "Nomor WhatsApp belum benar" : null],
         kosong("tanggalLahir", "Tanggal lahir"),
-        !isi.jenisKelamin ? "Pilih jenis kelamin" : null,
+        ["jenisKelamin", !isi.jenisKelamin ? "Pilih jenis kelamin" : null],
         kosong("kota", "Kota / kabupaten"),
         kosong("kecamatan", "Kecamatan"),
-        !isi.pendidikan ? "Pilih pendidikan terakhir" : null,
+        ["pendidikan", !isi.pendidikan ? "Pilih pendidikan terakhir" : null],
       ],
       1: [
-        !isi.pekerjaan ? "Pilih pekerjaan sekarang" : null,
-        !isi.pengalamanSales ? "Pilih pengalaman jualan" : null,
-        !isi.waktuKerja ? "Pilih waktu kerja" : null,
+        ["pekerjaan", !isi.pekerjaan ? "Pilih pekerjaan sekarang" : null],
+        ["pengalamanSales", !isi.pengalamanSales ? "Pilih pengalaman jualan" : null],
+        ["waktuKerja", !isi.waktuKerja ? "Pilih waktu kerja" : null],
         kosong("ketersediaan", "Hari & jam tersedia"),
-        !isi.kendaraan ? "Pilih kendaraan" : null,
-        isi.hpAndroid === null ? "Jawab soal HP Android" : null,
+        ["kendaraan", !isi.kendaraan ? "Pilih kendaraan" : null],
+        ["hpAndroid", isi.hpAndroid === null ? "Jawab soal HP Android" : null],
         kosong("area", "Area yang mau digarap"),
-        !isi.kenalWarung ? "Pilih jumlah warung yang kamu kenal" : null,
-        isi.alasan.trim().length < 20 ? "Ceritain alasanmu minimal 20 huruf" : null,
-        !isi.skemaKerja ? "Pilih skema kerja yang paling nyaman buat kamu" : null,
-        !isi.tempatProspek.length ? "Pilih tempat terbaik buat nemuin pemilik usaha" : null,
-        isi.tempatProspek.includes(PROSPEK_LAIN) && isi.tempatProspekLain.trim().length < 5
-          ? "Tulis ide tempatmu (minimal 5 huruf)"
-          : null,
+        ["kenalWarung", !isi.kenalWarung ? "Pilih jumlah warung yang kamu kenal" : null],
+        ["alasan", isi.alasan.trim().length < 20 ? "Ceritain alasanmu minimal 20 huruf" : null],
+        ["skemaKerja", !isi.skemaKerja ? "Pilih skema kerja yang paling nyaman buat kamu" : null],
+        [
+          "tempatProspek",
+          !isi.tempatProspek.length ? "Pilih tempat terbaik buat nemuin pemilik usaha" : null,
+        ],
+        [
+          "tempatProspekLain",
+          isi.tempatProspek.includes(PROSPEK_LAIN) && isi.tempatProspekLain.trim().length < 5
+            ? "Tulis ide tempatmu (minimal 5 huruf)"
+            : null,
+        ],
       ],
       2: [
-        !cv ? "Upload CV kamu dulu" : null,
-        !isi.waktuHubungi ? "Pilih waktu terbaik buat dihubungi" : null,
-        perluDropdown && !isi.dropdown ? "Pilih tahu Konsulin dari mana" : null,
-        !isi.setujuData ? "Centang persetujuan pemakaian data" : null,
+        ["cv", !cv ? "Upload CV kamu dulu" : null],
+        ["waktuHubungi", !isi.waktuHubungi ? "Pilih waktu terbaik buat dihubungi" : null],
+        ["dropdown", perluDropdown && !isi.dropdown ? "Pilih tahu Konsulin dari mana" : null],
+        ["setujuData", !isi.setujuData ? "Centang persetujuan pemakaian data" : null],
       ],
     };
-    return (cek[i] ?? []).find(Boolean) || "";
+    const x = (cek[i] ?? []).find(([, p]) => p);
+    return x ? { k: x[0], pesan: x[1] as string } : null;
   };
+  // Tandain isian yang salah & arahin ke sana (setelah langkahnya ke-render).
+  const tandai = (i: number, x: { k: Kunci; pesan: string }) => {
+    setLangkah(i);
+    setError(x.pesan);
+    setSalahDi((l) => ({ k: x.k, n: (l?.n ?? 0) + 1 }));
+  };
+  useEffect(() => {
+    if (!salahDi) return;
+    const el = document.querySelector<HTMLElement>(`[data-isian="${salahDi.k}"]`);
+    if (!el) return;
+    el.scrollIntoView({ block: "center", behavior: "smooth" });
+    el.querySelector<HTMLElement>(
+      "input:not([type=hidden]):not([disabled]), select, textarea, button",
+    )?.focus({ preventScroll: true });
+  }, [salahDi]);
+  // Props pembungkus isian: penanda buat scroll + bingkai merah kalau ini yang salah.
+  const tanda = (k: Kunci) => ({
+    "data-isian": k,
+    className:
+      salahDi?.k === k
+        ? "block rounded-sm outline outline-2 outline-offset-4 outline-red-600"
+        : "block",
+  });
+  const pesanSalah = (k: Kunci) =>
+    salahDi?.k === k && error ? (
+      <span role="alert" className="mt-1.5 block text-xs font-medium text-red-600">
+        {error}
+      </span>
+    ) : null;
 
   const keAtas = () => atasRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
   const lanjut = () => {
     const e = cekLangkah(langkah);
-    setError(e);
-    if (!e) {
-      setLangkah((x) => x + 1);
-      keAtas();
-    }
+    if (e) return tandai(langkah, e);
+    setError("");
+    setSalahDi(null);
+    setLangkah((x) => x + 1);
+    keAtas();
   };
 
   const pilihFile =
@@ -162,6 +207,7 @@ export function FormLamaran() {
       const f = e.target.files?.[0];
       e.target.value = "";
       setError("");
+      setSalahDi(null);
       if (!f) return;
       const gambar = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"].includes(
         f.type,
@@ -190,9 +236,12 @@ export function FormLamaran() {
 
   const kirim = async (e: React.FormEvent) => {
     e.preventDefault();
-    const salah = cekLangkah(0) || cekLangkah(1) || cekLangkah(2);
-    if (salah) return setError(salah);
+    for (const i of [0, 1, 2]) {
+      const e = cekLangkah(i);
+      if (e) return tandai(i, e);
+    }
     setError("");
+    setSalahDi(null);
     setSibuk(true);
     try {
       await kirimLamaran({ data: { ...isi, s, cv, foto } });
@@ -212,29 +261,33 @@ export function FormLamaran() {
     label: string,
     props: React.InputHTMLAttributes<HTMLInputElement> = {},
   ) => (
-    <label className="block">
+    <label {...tanda(k)}>
       <span className={kelasLabel}>{label}</span>
       <input
         value={String(isi[k] ?? "")}
         onChange={(e) => set(k, e.target.value as never)}
         className={kelasInput}
+        aria-invalid={salahDi?.k === k || undefined}
         {...props}
       />
+      {pesanSalah(k)}
     </label>
   );
   const pilih = (k: keyof Isi, label: string, opsi?: string[]) => (
-    <label className="block">
+    <label {...tanda(k)}>
       <span className={kelasLabel}>{label}</span>
       <select
         value={String(isi[k] ?? "")}
         onChange={(e) => set(k, e.target.value as never)}
         className={kelasInput}
+        aria-invalid={salahDi?.k === k || undefined}
       >
         <option value="">Pilih</option>
         {(opsi ?? []).map((o) => (
           <option key={o}>{o}</option>
         ))}
       </select>
+      {pesanSalah(k)}
     </label>
   );
   // Pertanyaan yang opsinya panjang: radio (satu) atau centang (banyak, dengan batas).
@@ -248,7 +301,7 @@ export function FormLamaran() {
     const nilai = isi[k];
     const penuh = banyak && maks ? (nilai as string[]).length >= maks : false;
     return (
-      <fieldset className="block">
+      <fieldset {...tanda(k)}>
         <legend className={kelasLabel + " leading-relaxed"}>
           {label}
           {maks ? (
@@ -285,6 +338,7 @@ export function FormLamaran() {
             );
           })}
         </div>
+        {pesanSalah(k)}
       </fieldset>
     );
   };
@@ -294,7 +348,7 @@ export function FormLamaran() {
     setB: (b: Berkas) => void,
     jenis: "cv" | "foto",
   ) => (
-    <div>
+    <div {...tanda(jenis === "cv" ? "cv" : "foto")}>
       <span className={kelasLabel}>{label}</span>
       {nilai ? (
         <div className="mt-2 flex items-center justify-between gap-3 rounded-sm border border-input bg-background px-3 py-2.5 text-sm">
@@ -327,18 +381,22 @@ export function FormLamaran() {
           </span>
         </label>
       )}
+      {pesanSalah(jenis === "cv" ? "cv" : "foto")}
     </div>
   );
   const centang = (k: "setujuData" | "setujuWa", children: ReactNode) => (
-    <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-muted-foreground">
-      <input
-        type="checkbox"
-        checked={isi[k]}
-        onChange={(e) => set(k, e.target.checked)}
-        className="mt-1 h-4 w-4 shrink-0 accent-[oklch(0.14_0_0)]"
-      />
-      <span>{children}</span>
-    </label>
+    <div {...tanda(k)}>
+      <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+        <input
+          type="checkbox"
+          checked={isi[k]}
+          onChange={(e) => set(k, e.target.checked)}
+          className="mt-1 h-4 w-4 shrink-0 accent-[oklch(0.14_0_0)]"
+        />
+        <span>{children}</span>
+      </label>
+      {pesanSalah(k)}
+    </div>
   );
 
   return (
@@ -426,7 +484,10 @@ export function FormLamaran() {
                   placeholder: "08xxxxxxxxxx",
                 })}
                 {teks("email", "Email (opsional)", { type: "email", autoComplete: "email" })}
-                {teks("tanggalLahir", "Tanggal lahir", { type: "date" })}
+                {teks("tanggalLahir", "Tanggal lahir", {
+                  type: "date",
+                  max: new Date().toISOString().slice(0, 10),
+                })}
                 {pilih("jenisKelamin", "Jenis kelamin", P.jenisKelamin)}
                 {teks("kota", "Kota / kabupaten domisili", { placeholder: "Bandung" })}
                 {teks("kecamatan", "Kecamatan", { placeholder: "Coblong" })}
@@ -450,7 +511,7 @@ export function FormLamaran() {
                   placeholder: "Senin-Sabtu, 09.00-16.00",
                 })}
                 {pilih("kendaraan", "Kendaraan buat keliling", P.kendaraan)}
-                <fieldset className="block">
+                <fieldset {...tanda("hpAndroid")}>
                   <legend className={kelasLabel}>Punya HP Android + kuota?</legend>
                   <div className="mt-2 grid grid-cols-2 gap-2">
                     {[
@@ -472,6 +533,7 @@ export function FormLamaran() {
                       </button>
                     ))}
                   </div>
+                  {pesanSalah("hpAndroid")}
                 </fieldset>
               </div>
               {teks("area", "Area yang mau kamu garap", {
@@ -482,7 +544,7 @@ export function FormLamaran() {
                 "Kira-kira kenal berapa pemilik warung di sekitarmu?",
                 P.kenalWarung,
               )}
-              <label className="block">
+              <label {...tanda("alasan")}>
                 <span className={kelasLabel}>Kenapa tertarik jadi Sales Partner?</span>
                 <textarea
                   rows={4}
@@ -494,6 +556,7 @@ export function FormLamaran() {
                 <span className="mt-1 block text-[11px] text-muted-foreground">
                   {isi.alasan.trim().length}/20 huruf minimal
                 </span>
+                {pesanSalah("alasan")}
               </label>
               {opsi("skemaKerja", "Skema kerja mana yang paling bikin kamu nyaman?", P.skemaKerja)}
               {opsi(
@@ -537,7 +600,7 @@ export function FormLamaran() {
             </>
           )}
 
-          {error && (
+          {error && !salahDi && (
             <p role="alert" className="text-sm font-medium text-foreground">
               {error}
             </p>
@@ -549,6 +612,7 @@ export function FormLamaran() {
                 type="button"
                 onClick={() => {
                   setError("");
+                  setSalahDi(null);
                   setLangkah((x) => x - 1);
                 }}
                 className="rounded-sm border border-primary px-6 py-3 font-display text-sm font-medium transition-colors hover:bg-accent"
