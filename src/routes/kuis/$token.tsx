@@ -65,12 +65,12 @@ function Kuis() {
     return (
       <Kerangka>
         <h1 className="font-display text-3xl font-bold">
-          {selesai.lulus ? "Benar semua!" : `Kamu benar ${selesai.benar} dari ${selesai.dari}`}
+          {selesai.lulus && selesai.benar === selesai.dari ? "Benar semua!" : `${selesai.lulus ? "Lulus! " : ""}Kamu benar ${selesai.benar} dari ${selesai.dari}`}
         </h1>
         <p className="mt-4 text-muted-foreground">
           {selesai.lulus
             ? "Makasih udah ngerjain kuisnya. Kalau kamu juga udah daftar di aplikasi Asisten Warung pakai nomor WA yang kamu pakai buat melamar, tim rekrutmen bakal ngirim link buat pilih jadwal interview."
-            : "Makasih udah ngerjain kuisnya. Syarat lanjutnya benar semua, jadi tim rekrutmen bakal ngabarin kamu soal langkah berikutnya lewat WhatsApp."}
+            : "Makasih udah ngerjain kuisnya. Nilainya belum memenuhi syarat lanjut otomatis, tapi tim rekrutmen tetap baca jawabanmu (termasuk esai) dan bakal ngabarin langkah berikutnya lewat WhatsApp."}
         </p>
       </Kerangka>
     );
